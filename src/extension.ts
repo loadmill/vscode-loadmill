@@ -18,8 +18,8 @@ import { CUSTOM_SCHEMA_REQUEST, CUSTOM_CONTENT_REQUEST, SchemaExtensionAPI } fro
 import { joinPath } from './paths';
 import { getJsonSchemaContent, IJSONSchemaCache, JSONSchemaDocumentContentProvider } from './json-schema-content-provider';
 import { getConflictingExtensions, showUninstallConflictsNotification } from './extensionConflicts';
-import { TelemetryErrorHandler, TelemetryOutputChannel } from './telemetry';
 import { TextDecoder } from 'util';
+import { LoadmillExtension } from './vscode-loadmill/extension';
 
 export interface ISchemaAssociations {
   [pattern: string]: string[];
@@ -89,12 +89,7 @@ export type LanguageClientConstructor = (
 ) => CommonLanguageClient;
 
 export interface RuntimeEnvironment {
-  readonly telemetry: TelemetryService;
   readonly schemaCache: IJSONSchemaCache;
-}
-
-export interface TelemetryService {
-  send(arg: { name: string; properties?: unknown });
 }
 
 export function startClient(
@@ -102,8 +97,6 @@ export function startClient(
   newLanguageClient: LanguageClientConstructor,
   runtime: RuntimeEnvironment
 ): SchemaExtensionAPI {
-  const telemetryErrorHandler = new TelemetryErrorHandler(runtime.telemetry, lsName, 4);
-  const outputChannel = window.createOutputChannel(lsName);
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for on disk and newly created YAML documents
@@ -113,8 +106,6 @@ export function startClient(
       fileEvents: [workspace.createFileSystemWatcher('**/*.?(e)y?(a)ml'), workspace.createFileSystemWatcher('**/*.json')],
     },
     revealOutputChannelOn: RevealOutputChannelOn.Never,
-    errorHandler: telemetryErrorHandler,
-    outputChannel: new TelemetryOutputChannel(outputChannel, runtime.telemetry),
   };
 
   // Create the language client and start it
@@ -132,12 +123,6 @@ export function startClient(
       'json-schema',
       new JSONSchemaDocumentContentProvider(runtime.schemaCache, schemaExtensionAPI)
     )
-  );
-
-  context.subscriptions.push(
-    client.onTelemetry((e) => {
-      runtime.telemetry.send(e);
-    })
   );
 
   findConflicts();
@@ -168,7 +153,6 @@ export function startClient(
       return workspace.fs.readFile(Uri.file(fsPath)).then((uint8array) => new TextDecoder().decode(uint8array));
     });
 
-    runtime.telemetry.send({ name: 'yaml.server.initialized' });
     // Adapted from:
     // https://github.com/microsoft/vscode/blob/94c9ea46838a9a619aeafb7e8afd1170c967bb55/extensions/json-language-features/client/src/jsonClient.ts#L305-L318
     client.onNotification(ResultLimitReachedNotification.type, async (message) => {
@@ -191,6 +175,8 @@ export function startClient(
       }
     });
   });
+
+  LoadmillExtension.activate(context, schemaExtensionAPI);
 
   return schemaExtensionAPI;
 }

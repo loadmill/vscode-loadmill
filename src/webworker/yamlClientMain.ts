@@ -30,7 +30,6 @@ export async function activate(context: ExtensionContext): Promise<SchemaExtensi
     };
 
     const runtime: RuntimeEnvironment = {
-      telemetry: { send: () => undefined },
       schemaCache,
     };
     return startClient(context, newLanguageClient, runtime);
