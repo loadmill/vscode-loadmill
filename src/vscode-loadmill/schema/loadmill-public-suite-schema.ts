@@ -1,4 +1,4 @@
-import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
+import { JSONSchema7, JSONSchema7Definition, JSONSchema7TypeName } from 'json-schema';
 
 import { descriptions } from './descriptions';
 import { LoadmillSuiteSchema } from './types';
@@ -140,12 +140,12 @@ const requestSchema = {
   headers: {
     type: 'array' as JSONSchema7TypeName,
     description: descriptions.headers,
-    items: [headerSchema],
+    items: { ...headerSchema },
   },
   extract: {
     type: 'array' as JSONSchema7TypeName,
     description: descriptions.extractions,
-    items: [extractionSchema],
+    items: { ...extractionSchema },
   },
   postScript: {
     type: 'string' as JSONSchema7TypeName,
@@ -155,7 +155,12 @@ const requestSchema = {
     type: 'array' as JSONSchema7TypeName,
     description: descriptions.assertions,
     items: {
-      anyOf: [existsAssertionSchema, notExistsAssertionSchema, equalsAssertionSchema, lesserAssertionSchema],
+      anyOf: [
+        { ...existsAssertionSchema },
+        { ...notExistsAssertionSchema },
+        { ...equalsAssertionSchema },
+        { ...lesserAssertionSchema },
+      ],
     },
   },
   loop: {
@@ -180,7 +185,7 @@ const requestSchema = {
 const requestsSchema = {
   type: 'array' as JSONSchema7TypeName,
   description: descriptions.requests,
-  items: [requestSchema],
+  items: { ...requestSchema },
 };
 
 const testFlowSchema = {
@@ -222,6 +227,15 @@ const testFlowSchema = {
   required: ['id', 'order', 'conf'],
 };
 
+const parameterSchema = {
+  type: 'object',
+  patternProperties: {
+    [PARAMETER_NAME_REGEX]: {
+      type: 'string',
+    },
+  },
+};
+
 export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
   description: descriptions.suite,
   type: 'object',
@@ -244,16 +258,7 @@ export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
         parameters: {
           type: 'array',
           description: descriptions.suiteParameters,
-          items: [
-            {
-              type: 'object',
-              patternProperties: {
-                [PARAMETER_NAME_REGEX]: {
-                  type: 'string',
-                },
-              },
-            },
-          ],
+          items: { ...parameterSchema } as JSONSchema7Definition,
         },
         auth: {
           type: 'object',
@@ -277,12 +282,12 @@ export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
         loginFlow: {
           type: 'array',
           description: descriptions.loginFlow,
-          items: [requestSchema],
+          items: { ...requestSchema } as JSONSchema7Definition,
         },
         authenticationHeaders: {
           type: 'array',
           description: descriptions.authenticationHeaders,
-          items: [headerSchema],
+          items: { ...headerSchema } as JSONSchema7Definition,
         },
         sharedLoginFlowDescription: {
           type: 'string',
@@ -298,7 +303,7 @@ export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
     flows: {
       type: 'array',
       description: descriptions.flows,
-      items: [testFlowSchema],
+      items: { ...testFlowSchema } as JSONSchema7Definition,
     },
     hooks: {
       type: 'object',
@@ -320,7 +325,7 @@ export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
           description: descriptions.afterAll,
           ...testFlowSchema,
         },
-      },
+      } as { [key: string]: JSONSchema7Definition },
     },
     dependencies: {
       type: 'object',
