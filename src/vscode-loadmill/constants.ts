@@ -3,9 +3,9 @@ const protocol = 'http';
 const domain = 'localhost';
 const apiBaseUrl = `${protocol}://${domain}:${port}`;
 
-const schemaPath = 'open-api/schema';
+const suitePath = 'app/api-tests/test-suites';
 
-export const LOADMILL_SCHEMA_URL = `${apiBaseUrl}/${schemaPath}` || 'https://app.loadmill.com/open-api/schema';
+export const LOADMILL_SUITE_URL = `${apiBaseUrl}/${suitePath}`;
 export const LOADMILL_SUITES_FOLDER_PATH = 'loadmill-suites/';
 export const EXTENSION_NAME = 'vscode-loadmill';
 export const PROVIDER = 'loadmill';

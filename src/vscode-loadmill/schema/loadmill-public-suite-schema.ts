@@ -1,8 +1,6 @@
 import { JSONSchema7, JSONSchema7TypeName } from 'json-schema';
 
-import { LOADMILL_SCHEMA_URL } from '../constants';
 import { descriptions } from './descriptions';
-import { titles } from './titles';
 import { LoadmillSuiteSchema } from './types';
 
 const PARAMETER_NAME_REGEX = '^[_a-zA-Z][_a-zA-Z0-9]*';
@@ -226,7 +224,6 @@ const testFlowSchema = {
 
 export const LOADMILL_SUITE_SCHEMA: LoadmillSuiteSchema = {
   description: descriptions.suite,
-  $schema: LOADMILL_SCHEMA_URL,
   type: 'object',
   properties: {
     conf: {

@@ -16,6 +16,7 @@ import {
   workspace,
 } from 'vscode';
 import { BOILERPLATE_LOADMILL_SUITE_TEXT } from './constants';
+import { isEmptyYamlLoadmillSuiteFile } from './utils';
 
 export const loadmillCompletionItemProvider = {
   provideCompletionItems(
@@ -66,11 +67,4 @@ export function triggerSuggestOnOpenEmptyLoadmillSuite(): (e: TextDocument) => v
       commands.executeCommand('editor.action.triggerSuggest');
     }
   };
-}
-
-function isEmptyYamlLoadmillSuiteFile(document: TextDocument): boolean {
-  const isYaml = document.languageId === 'yaml';
-  const isEmptyText = document.getText().trim() === '';
-  const isLoadmillSuite = document.uri.path.includes('loadmill');
-  return isYaml && isEmptyText && isLoadmillSuite;
 }

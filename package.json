@@ -1,8 +1,8 @@
 {
   "name": "vscode-loadmill",
   "displayName": "Loadmill",
-  "description": "YAML Language Support by Red Hat, with built-in Kubernetes syntax support",
-  "author": "Red Hat",
+  "description": "Autocompletion and validation for writing and editing Loadmill suite in YAML Language.",
+  "author": "Loadmill",
   "contributors": [
     {
       "name": "Gilad Gur Andelman",
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/loadmill/vscode-loadmill"
   },
-  "icon": "icon/icon128.png",
+  "icon": "icon/loadmill-logo.png",
   "engines": {
     "npm": ">=7.0.0",
     "vscode": "^1.52.0"
@@ -26,7 +26,8 @@
     "Programming Languages",
     "Linters",
     "Snippets",
-    "Formatters"
+    "Formatters",
+    "Testing"
   ],
   "capabilities": {
     "untrustedWorkspaces": {
@@ -38,7 +39,7 @@
     "onLanguage:yaml"
   ],
   "keywords": [
-    "kubernetes",
+    "loadmill",
     "yaml",
     "autocompletion",
     "validation"
@@ -184,6 +185,26 @@
         "editor.autoIndent": "keep",
         "editor.wordBasedSuggestions": false
       }
+    },
+    "commands": [
+      {
+        "command": "vscode-loadmill.openSuite",
+        "title": "Open suite",
+        "category": "vscode-loadmill",
+        "icon": {
+          "light": "./media/pinmill_blue.svg",
+          "dark": "./media/pinmill_blue.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "vscode-loadmill.openSuite",
+          "group": "navigation@-999",
+          "when": "resourceLangId == yaml"
+        }
+      ]
     }
   },
   "extensionDependencies": [],

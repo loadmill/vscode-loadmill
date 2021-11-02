@@ -7,6 +7,7 @@ import {
   registerTriggerSuggestOnChangeToEmptyLoadmillSuite,
   registerTriggerSuggestOnOpenEmptyLoadmillSuite,
 } from './loadmill-completion-item-provider';
+import { registerOpenSuite } from './open-suite';
 
 export const LoadmillExtension = {
   activate(context: ExtensionContext, schemaExtensionAPI: SchemaExtensionAPI): void {
@@ -15,5 +16,6 @@ export const LoadmillExtension = {
     registerLoadmillCompletionItemProvider(context);
     registerTriggerSuggestOnChangeToEmptyLoadmillSuite();
     registerTriggerSuggestOnOpenEmptyLoadmillSuite();
+    registerOpenSuite(context);
   },
 };
