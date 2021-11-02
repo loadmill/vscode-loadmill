@@ -13,11 +13,12 @@ export const REQUEST_SCHEMA_URI = `${PROVIDER}://schema/loadmill-suite-schema`;
 
 export const BOILERPLATE_LOADMILL_SUITE_TEXT = `conf:
   meta:
-    description: My Awesome Suite
+    description: That's so Suite
 flows:
   - conf:
-    requests:
+      meta:
+        description: Let it blossom, let it flow
+      requests:
 
-      - method: GET
-        url: example.com
-`;
+        - method: GET
+          url: example.com`;

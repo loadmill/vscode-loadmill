@@ -1,7 +1,6 @@
 import { JSONSchema7, JSONSchema7TypeName, JSONSchema7Definition } from 'json-schema';
 
 type InformativeSchema = JSONSchema7 & {
-  title: string;
   description: string | InformativeSchema;
   type: JSONSchema7TypeName | JSONSchema7TypeName[] | undefined;
 };
