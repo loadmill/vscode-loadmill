@@ -1,7 +1,7 @@
-const port = '8090';
-const protocol = 'http';
-const domain = 'localhost';
-const apiBaseUrl = `${protocol}://${domain}:${port}`;
+const protocol = process.env.PROTOCOL || 'https';
+const domain = process.env.DOMAIN || 'app.loadmill.com';
+const port = process.env.PORT;
+const apiBaseUrl = `${protocol}://${domain}` + (port ? `:${port}` : '');
 
 const suitePath = 'app/api-tests/test-suites';
 

@@ -231,7 +231,7 @@ const parameterSchema = {
   type: 'object',
   patternProperties: {
     [PARAMETER_NAME_REGEX]: {
-      type: 'string',
+      oneOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }],
     },
   },
 };

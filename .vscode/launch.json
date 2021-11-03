@@ -11,6 +11,7 @@
       "stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "envFile": "${workspaceFolder}/.env"
     },
     {
       "name": "Extension Tests",
